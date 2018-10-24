@@ -1,0 +1,9 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# IDEs and editors
+.vs/
+obj/
+bin/
+booklist-aspnet-core/src/Cloud.BookList.Web.Host/App_Data/Logs/
+booklist-aspnet-core/src/Cloud.BookList.Web.Mvc/App_Data/Logs/
+booklist-aspnet-core/src/Cloud.BookList.Migrator/Logs/Logs.txt

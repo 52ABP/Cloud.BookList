@@ -13,6 +13,9 @@ import * as ApiServiceProxies from '@shared/service-proxies/service-proxies';
     ApiServiceProxies.TokenAuthServiceProxy,
     ApiServiceProxies.AccountServiceProxy,
     ApiServiceProxies.ConfigurationServiceProxy,
+    // 公开创建租户的Api
+    ApiServiceProxies.TenantRegistrationServiceProxy,
+
     // 云书单
     ApiServiceProxies.BookTagServiceProxy,
     ApiServiceProxies.BookServiceProxy,

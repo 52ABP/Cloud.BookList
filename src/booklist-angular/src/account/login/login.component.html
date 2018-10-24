@@ -23,8 +23,8 @@
         <nz-form-item>
           <nz-form-control>
             <nz-input-group nzPrefixIcon="anticon anticon-lock">
-              <input nz-input name="password" #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.password" [placeholder]="l('Password')"
-                type="password" [nzSize]="'large'" required maxlength="32">
+              <input nz-input name="password" #passwordInput="ngModel" [(ngModel)]="loginService.authenticateModel.password"
+                [placeholder]="l('Password')" type="password" [nzSize]="'large'" required maxlength="32">
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
@@ -49,7 +49,8 @@
 
         <!-- 登陆按钮 -->
 
-        <button nz-button [nzType]="'primary'" [nzLoading]="submitting" [nzSize]="'large'" class="ant-btn__block" [disabled]="!loginForm.form.valid||submitting">
+        <button nz-button [nzType]="'primary'" [nzLoading]="submitting" [nzSize]="'large'" class="ant-btn__block"
+          [disabled]="!loginForm.form.valid||submitting">
           <i class="anticon anticon-login"></i>
           <span>{{l("LogIn")}}</span>
         </button>
@@ -66,13 +67,22 @@
 
       <div class="login-action-items">
         <div class="links">
+
+          <!-- 注册用户 -->
           <span *ngIf="isSelfRegistrationAllowed">
             <a routerLink="/account/register">{{l("CreateAnAccount")}}</a>
             <nz-divider nzType="vertical"></nz-divider>
           </span>
-          <span>
-            <a routerLink="/account/email-activation">{{l("EmailActivation")}}</a>
+          <!-- 宿主创建租户 -->
+          <span *ngIf="!appSession.tenantId">
+            <a routerLink="/account/tenant-register">{{l("NewTenant")}}</a>
+            <nz-divider nzType="vertical"></nz-divider>
           </span>
+
+          <!-- <span>
+            <a routerLink="/account/email-activation">{{l("EmailActivation")}}</a>
+          </span> -->
+
         </div>
       </div>
 

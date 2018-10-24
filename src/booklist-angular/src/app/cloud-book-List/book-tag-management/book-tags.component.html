@@ -1,0 +1,161 @@
+<page-header [title]="l('BookTags')" [desc]="l('BookTagsHeaderInfo')"></page-header>
+
+<nz-card [nzBordered]="false">
+
+    <div class="mb-md">
+        <!-- 模糊搜索框 -->
+        <nz-row nzGutter="8">
+            <nz-col nzSm="24">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+                            <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText"
+                                [placeholder]="l('SearchWithThreeDot')">
+                            <ng-template #suffixSearchButton>
+                                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                                    <i class="anticon anticon-search"></i>
+                                </button>
+                            </ng-template>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <div class="mb-md">
+        <!-- 操作常规按钮部分 如： 添加、批量删除、导出Excel表 -->
+        <nz-row nzGutter="8">
+            <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+
+
+                <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.BookTag.Create')&&appSession.tenantId"
+                    (click)="createOrEdit()">
+                    <i class="anticon anticon-plus"></i>
+                    <span>
+                        {{l("Create")}}
+                    </span>
+                </button>
+                <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.BookTag.BatchDelete')" (click)="batchDelete()">
+                    <i class="anticon anticon-delete"></i>
+                    <span>
+                        {{l("BatchDelete")}}
+                    </span>
+                </button>
+                <button nz-button nzType="default" *ngIf="isGranted('Pages.BookTag.ExportToExcel')" (click)="exportToExcel()">
+                    <i class="anticon anticon-file-excel"></i>
+                    <span>
+                        {{l("ExportToExcel")}}
+                    </span>
+                </button>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <!-- 复选框提示的内容数据部分 -->
+    <div class="my-md">
+        <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+            <ng-template #message>
+                <span [innerHTML]="l('GridSelectedXItemsTips',selectedDataItems.length)"></span>
+                <a (click)="restCheckStatus(dataList)" class="ml-md">
+                    {{l('ClearEmpty')}}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="refreshGoFirstPage()">
+                    {{l('Refresh')}}
+                </a>
+            </ng-template>
+        </nz-alert>
+    </div>
+
+    <!-- 实体的表格内容 -->
+    <nz-row class="my-md">
+        <nz-table #ajaxTable [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize"
+            [nzLoading]="isTableLoading" (nzPageIndexChange)="pageNumberChange()" (nzPageSizeChange)="refresh()"
+            [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzNoResult]="noDataTemplate" [nzShowTotal]="showTotalTemplate"
+            [nzFrontPagination]="false">
+            <!-- 暂无数据组件 -->
+            <ng-template #noDataTemplate>
+                <no-data></no-data>
+            </ng-template>
+            <!-- 分页信息显示 当前 1 页/共 3 页，共 5 条/显示 1-2 条 -->
+            <ng-template #showTotalTemplate let-total let-range="range">
+                {{l('GridFooterDisplayText',pageNumber,totalPages,total,range[0],range[1])}}
+            </ng-template>
+            <!-- 表头 -->
+            <thead (nzSortChange)="gridSort($event)">
+                <tr>
+                    <th nzShowCheckbox [(nzChecked)]="allChecked" [nzDisabled]="allCheckboxDisabled" [nzIndeterminate]="checkboxIndeterminate"
+                        (nzCheckedChange)="checkAll($event)"></th>
+                    <th nz-th nzShowSort nzSortKey="Name">
+                        <span>{{l('Name')}}</span>
+                    </th>
+                    <th nzShowSort nzSortKey="creationTime" class="text-center">
+                        <span>{{l('CreationTime')}}</span>
+                    </th>
+                    <th nzShowSort nzSortKey="tenancyName" class="text-center" *ngIf="!this.appSession.tenantId">
+                        <span>{{l('TenancyName')}}</span>
+                    </th>
+                    <th nzWidth="230px" class="text-center">
+                        <span>{{l('Actions')}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <!-- 表格内容 -->
+            <tbody>
+                <tr *ngFor="let item of ajaxTable.data">
+                    <!-- 全选框 -->
+                    <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></td>
+
+                    <td nz-td>
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.name">
+                                {{item.name}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.creationTime  |_date">
+                                {{item.creationTime |_date}}
+                            </span>
+                        </ellipsis>
+                    </td>
+                    <td class="text-center" *ngIf="!this.appSession.tenantId">
+                        <ellipsis lines="1">
+                            <span nz-tooltip [nzTitle]="item.tenancyName" *ngIf="item.tenancyName">
+                                {{item.tenancyName}}
+                            </span>
+                        </ellipsis>
+                    </td>
+
+                    <td>
+                        <!-- 编辑 -->
+                        <ng-container *ngIf="isGranted('Pages.BookTag.Edit')">
+                            <a (click)="createOrEdit(item.id)" *ngIf="appSession.tenantId">
+                                <i class="anticon anticon-edit mr-sm"></i>
+                                <span>{{l('Edit')}}</span>
+                            </a>
+                            <a (click)="createOrEdit(item.id)" *ngIf="!appSession.tenantId">
+                                <i class="anticon anticon-search mr-sm"></i>
+                                <span>{{l('ViewDetails')}}</span>
+                            </a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                        </ng-container>
+                        <!-- 删除 -->
+                        <ng-container *ngIf="isGranted('Pages.BookTag.Delete')">
+                            <nz-popconfirm [nzTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)"
+                                [nzOkText]="l('Ok')" [nzCancelText]="l('Cancel')">
+                                <a nz-popconfirm>
+                                    <i class="anticon anticon-delete mr-sm"></i>
+                                    <span>{{l('Delete')}}</span>
+                                </a>
+                            </nz-popconfirm>
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+
+    </nz-row>
+</nz-card>

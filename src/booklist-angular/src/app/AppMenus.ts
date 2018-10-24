@@ -44,6 +44,8 @@ export class AppMenus {
             new MenuItem('BookTags', 'Pages.BookTag.Query', 'anticon anticon-info-circle-o', '/app/colud-book-list/book-tags'),
             // 书籍
             new MenuItem('Books', 'Pages.Book.Query', 'anticon anticon-info-circle-o', '/app/colud-book-list/books'),
+            // 书单
+            new MenuItem('BookLists', 'Pages.BookList.Query', 'anticon anticon-info-circle-o', '/app/colud-book-list/book-lists'),
         ]),
     ];
 }

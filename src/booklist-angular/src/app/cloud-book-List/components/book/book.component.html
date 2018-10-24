@@ -1,0 +1,20 @@
+<nz-spin [nzSpinning]="loading">
+  <nz-select #select style="width: 100%" [(ngModel)]="multipleValue" [nzSize]="size" nzMode="multiple" [nzOpen]="isOpen"
+    nzPlaceHolder="Please select" (ngModelChange)="modelChange()" (nzOnSearch)="seachValueChange($event)">
+
+    <nz-option nzCustomContent *ngFor="let option of listOfOption" [nzLabel]="option.name" [nzValue]="option.id">
+      <div nz-row>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <img [src]="option.imgUrl" style="width:20px;height:23px;" *ngIf="option.imgUrl" />
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <div class="gutter-box"> {{option.name}}</div>
+        </div>
+        <div nz-col class="gutter-row" nzSpan="6">
+          <div class="gutter-box"> {{option.author}}</div>
+        </div>
+      </div>
+
+    </nz-option>
+  </nz-select>
+</nz-spin>

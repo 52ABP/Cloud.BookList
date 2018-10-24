@@ -530,6 +530,525 @@ export class BookServiceProxy {
 }
 
 @Injectable()
+export class BookListServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param id (optional) 
+     * @param tenantId (optional) 
+     * @return Success
+     */
+    getShare(id: number | null | undefined, tenantId: number | null | undefined): Observable<BookListShareDto> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/GetShare?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        if (tenantId !== undefined)
+            url_ += "tenantId=" + encodeURIComponent("" + tenantId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetShare(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetShare(<any>response_);
+                } catch (e) {
+                    return <Observable<BookListShareDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BookListShareDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetShare(response: HttpResponseBase): Observable<BookListShareDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BookListShareDto.fromJS(resultData200) : new BookListShareDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BookListShareDto>(<any>null);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param maxResultCount (optional) 
+     * @param skipCount (optional) 
+     * @return Success
+     */
+    getPaged(filterText: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfBookListListDto> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/GetPaged?";
+        if (filterText !== undefined)
+            url_ += "FilterText=" + encodeURIComponent("" + filterText) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPaged(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPaged(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfBookListListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfBookListListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetPaged(response: HttpResponseBase): Observable<PagedResultDtoOfBookListListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfBookListListDto.fromJS(resultData200) : new PagedResultDtoOfBookListListDto();
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfBookListListDto>(<any>null);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param maxResultCount (optional) 
+     * @param skipCount (optional) 
+     * @return Success
+     */
+    getAll(filterText: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfBookListListDto> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/GetAll?";
+        if (filterText !== undefined)
+            url_ += "FilterText=" + encodeURIComponent("" + filterText) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResultDtoOfBookListListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResultDtoOfBookListListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<ListResultDtoOfBookListListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ListResultDtoOfBookListListDto.fromJS(resultData200) : new ListResultDtoOfBookListListDto();
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResultDtoOfBookListListDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getById(id: number | null | undefined): Observable<BookListListDto> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/GetById?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetById(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetById(<any>response_);
+                } catch (e) {
+                    return <Observable<BookListListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BookListListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetById(response: HttpResponseBase): Observable<BookListListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BookListListDto.fromJS(resultData200) : new BookListListDto();
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BookListListDto>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getForEdit(id: number | null | undefined): Observable<GetBookListForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/GetForEdit?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<GetBookListForEditOutput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<GetBookListForEditOutput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetForEdit(response: HttpResponseBase): Observable<GetBookListForEditOutput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? GetBookListForEditOutput.fromJS(resultData200) : new GetBookListForEditOutput();
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetBookListForEditOutput>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    createOrUpdate(input: CreateOrUpdateBookListInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/CreateOrUpdate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    delete(id: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/Delete?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param input (optional) 
+     * @return Success
+     */
+    batchDelete(input: number[] | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/BookList/BatchDelete";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBatchDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBatchDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBatchDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("A server error occurred.", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+}
+
+@Injectable()
 export class BookTagServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -3021,6 +3540,552 @@ export class CreateOrUpdateBookInput implements ICreateOrUpdateBookInput {
 export interface ICreateOrUpdateBookInput {
     book: BookEditDto;
     tagIds: number[] | undefined;
+}
+
+export class BookListShareDto implements IBookListShareDto {
+    name: string | undefined;
+    intro: string | undefined;
+    creationTime: moment.Moment | undefined;
+    books: BookAndBookTagDto[] | undefined;
+    userName: string | undefined;
+
+    constructor(data?: IBookListShareDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.intro = data["intro"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            if (data["books"] && data["books"].constructor === Array) {
+                this.books = [];
+                for (let item of data["books"])
+                    this.books.push(BookAndBookTagDto.fromJS(item));
+            }
+            this.userName = data["userName"];
+        }
+    }
+
+    static fromJS(data: any): BookListShareDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BookListShareDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["intro"] = this.intro;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        if (this.books && this.books.constructor === Array) {
+            data["books"] = [];
+            for (let item of this.books)
+                data["books"].push(item.toJSON());
+        }
+        data["userName"] = this.userName;
+        return data; 
+    }
+
+    clone(): BookListShareDto {
+        const json = this.toJSON();
+        let result = new BookListShareDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBookListShareDto {
+    name: string | undefined;
+    intro: string | undefined;
+    creationTime: moment.Moment | undefined;
+    books: BookAndBookTagDto[] | undefined;
+    userName: string | undefined;
+}
+
+export class BookAndBookTagDto implements IBookAndBookTagDto {
+    imgUrl: string | undefined;
+    name: string | undefined;
+    author: string | undefined;
+    intro: string | undefined;
+    url: string | undefined;
+    bookTags: string[] | undefined;
+
+    constructor(data?: IBookAndBookTagDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.imgUrl = data["imgUrl"];
+            this.name = data["name"];
+            this.author = data["author"];
+            this.intro = data["intro"];
+            this.url = data["url"];
+            if (data["bookTags"] && data["bookTags"].constructor === Array) {
+                this.bookTags = [];
+                for (let item of data["bookTags"])
+                    this.bookTags.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): BookAndBookTagDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BookAndBookTagDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["imgUrl"] = this.imgUrl;
+        data["name"] = this.name;
+        data["author"] = this.author;
+        data["intro"] = this.intro;
+        data["url"] = this.url;
+        if (this.bookTags && this.bookTags.constructor === Array) {
+            data["bookTags"] = [];
+            for (let item of this.bookTags)
+                data["bookTags"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): BookAndBookTagDto {
+        const json = this.toJSON();
+        let result = new BookAndBookTagDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBookAndBookTagDto {
+    imgUrl: string | undefined;
+    name: string | undefined;
+    author: string | undefined;
+    intro: string | undefined;
+    url: string | undefined;
+    bookTags: string[] | undefined;
+}
+
+export class PagedResultDtoOfBookListListDto implements IPagedResultDtoOfBookListListDto {
+    totalCount: number | undefined;
+    items: BookListListDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfBookListListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(BookListListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfBookListListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfBookListListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PagedResultDtoOfBookListListDto {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfBookListListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfBookListListDto {
+    totalCount: number | undefined;
+    items: BookListListDto[] | undefined;
+}
+
+export class BookListListDto implements IBookListListDto {
+    name: string;
+    intro: string | undefined;
+    creationTime: moment.Moment | undefined;
+    tenantId: number | undefined;
+    id: number | undefined;
+
+    constructor(data?: IBookListListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.intro = data["intro"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.tenantId = data["tenantId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): BookListListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BookListListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["intro"] = this.intro;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["tenantId"] = this.tenantId;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): BookListListDto {
+        const json = this.toJSON();
+        let result = new BookListListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBookListListDto {
+    name: string;
+    intro: string | undefined;
+    creationTime: moment.Moment | undefined;
+    tenantId: number | undefined;
+    id: number | undefined;
+}
+
+export class ListResultDtoOfBookListListDto implements IListResultDtoOfBookListListDto {
+    items: BookListListDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfBookListListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(BookListListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfBookListListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfBookListListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): ListResultDtoOfBookListListDto {
+        const json = this.toJSON();
+        let result = new ListResultDtoOfBookListListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResultDtoOfBookListListDto {
+    items: BookListListDto[] | undefined;
+}
+
+export class GetBookListForEditOutput implements IGetBookListForEditOutput {
+    bookList: BookListEditDto | undefined;
+    books: BookSelectListDto[] | undefined;
+
+    constructor(data?: IGetBookListForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.bookList = data["bookList"] ? BookListEditDto.fromJS(data["bookList"]) : <any>undefined;
+            if (data["books"] && data["books"].constructor === Array) {
+                this.books = [];
+                for (let item of data["books"])
+                    this.books.push(BookSelectListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): GetBookListForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBookListForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bookList"] = this.bookList ? this.bookList.toJSON() : <any>undefined;
+        if (this.books && this.books.constructor === Array) {
+            data["books"] = [];
+            for (let item of this.books)
+                data["books"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): GetBookListForEditOutput {
+        const json = this.toJSON();
+        let result = new GetBookListForEditOutput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetBookListForEditOutput {
+    bookList: BookListEditDto | undefined;
+    books: BookSelectListDto[] | undefined;
+}
+
+export class BookListEditDto implements IBookListEditDto {
+    id: number | undefined;
+    name: string;
+    intro: string | undefined;
+
+    constructor(data?: IBookListEditDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.intro = data["intro"];
+        }
+    }
+
+    static fromJS(data: any): BookListEditDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BookListEditDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["intro"] = this.intro;
+        return data; 
+    }
+
+    clone(): BookListEditDto {
+        const json = this.toJSON();
+        let result = new BookListEditDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBookListEditDto {
+    id: number | undefined;
+    name: string;
+    intro: string | undefined;
+}
+
+export class BookSelectListDto implements IBookSelectListDto {
+    isSelected: boolean | undefined;
+    imgUrl: string | undefined;
+    name: string | undefined;
+    author: string | undefined;
+    intro: string | undefined;
+    url: string | undefined;
+    creationTime: moment.Moment | undefined;
+    tenancyDisplayName: string | undefined;
+    tenancyName: string | undefined;
+    id: number | undefined;
+
+    constructor(data?: IBookSelectListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.isSelected = data["isSelected"];
+            this.imgUrl = data["imgUrl"];
+            this.name = data["name"];
+            this.author = data["author"];
+            this.intro = data["intro"];
+            this.url = data["url"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.tenancyDisplayName = data["tenancyDisplayName"];
+            this.tenancyName = data["tenancyName"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): BookSelectListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BookSelectListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSelected"] = this.isSelected;
+        data["imgUrl"] = this.imgUrl;
+        data["name"] = this.name;
+        data["author"] = this.author;
+        data["intro"] = this.intro;
+        data["url"] = this.url;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["tenancyDisplayName"] = this.tenancyDisplayName;
+        data["tenancyName"] = this.tenancyName;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): BookSelectListDto {
+        const json = this.toJSON();
+        let result = new BookSelectListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBookSelectListDto {
+    isSelected: boolean | undefined;
+    imgUrl: string | undefined;
+    name: string | undefined;
+    author: string | undefined;
+    intro: string | undefined;
+    url: string | undefined;
+    creationTime: moment.Moment | undefined;
+    tenancyDisplayName: string | undefined;
+    tenancyName: string | undefined;
+    id: number | undefined;
+}
+
+export class CreateOrUpdateBookListInput implements ICreateOrUpdateBookListInput {
+    bookList: BookListEditDto;
+    bookIds: number[] | undefined;
+
+    constructor(data?: ICreateOrUpdateBookListInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.bookList = new BookListEditDto();
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.bookList = data["bookList"] ? BookListEditDto.fromJS(data["bookList"]) : new BookListEditDto();
+            if (data["bookIds"] && data["bookIds"].constructor === Array) {
+                this.bookIds = [];
+                for (let item of data["bookIds"])
+                    this.bookIds.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateOrUpdateBookListInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrUpdateBookListInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bookList"] = this.bookList ? this.bookList.toJSON() : <any>undefined;
+        if (this.bookIds && this.bookIds.constructor === Array) {
+            data["bookIds"] = [];
+            for (let item of this.bookIds)
+                data["bookIds"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): CreateOrUpdateBookListInput {
+        const json = this.toJSON();
+        let result = new CreateOrUpdateBookListInput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateOrUpdateBookListInput {
+    bookList: BookListEditDto;
+    bookIds: number[] | undefined;
 }
 
 export class PagedResultDtoOfBookTagListDto implements IPagedResultDtoOfBookTagListDto {

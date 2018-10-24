@@ -637,6 +637,12 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+angular2-qrcode@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/angular2-qrcode/-/angular2-qrcode-2.0.1.tgz#1b4e65c302694b5078ca06f71138f7e4367754dc"
+  dependencies:
+    qrious "^2.2.0"
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
@@ -1389,6 +1395,12 @@ camelcase@^4.0.0, camelcase@^4.1.0:
 caniuse-lite@^1.0.30000792, caniuse-lite@^1.0.30000805, caniuse-lite@^1.0.30000844, caniuse-lite@^1.0.30000864, caniuse-lite@^1.0.30000876:
   version "1.0.30000877"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000877.tgz#f189673b86ecc06436520e3e391de6a13ca923b4"
+
+canvas@^1.6.5:
+  version "1.6.13"
+  resolved "https://registry.yarnpkg.com/canvas/-/canvas-1.6.13.tgz#8cb4e9abbea9e615a377890ffac50277a1167c73"
+  dependencies:
+    nan "^2.10.0"
 
 capture-stack-trace@^1.0.0:
   version "1.0.0"
@@ -6233,6 +6245,12 @@ q@^1.4.1:
 qjobs@^1.1.4:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/qjobs/-/qjobs-1.2.0.tgz#c45e9c61800bd087ef88d7e256423bdd49e5d071"
+
+qrious@^2.2.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/qrious/-/qrious-2.3.0.tgz#ca7ce68a82099a67a90e4979f4b1cdf51ef32475"
+  optionalDependencies:
+    canvas "^1.6.5"
 
 qs@6.5.1:
   version "6.5.1"

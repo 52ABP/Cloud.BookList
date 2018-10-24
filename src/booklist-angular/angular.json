@@ -33,6 +33,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/qrious/dist/umd/qrious.min.js",
               "node_modules/sweetalert/dist/sweetalert.min.js",
               "node_modules/block-ui/jquery.blockUI.js",
               "node_modules/spin.js/spin.min.js",
@@ -49,17 +50,16 @@
               "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.sweet-alert.js",
               "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.blockUI.js",
               "node_modules/abp-web-resources/Abp/Framework/scripts/libs/abp.spin.js"
-
-
-
             ]
           },
           "configurations": {
             "production": {
-              "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.prod.ts"
-              }],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -71,10 +71,12 @@
               "buildOptimizer": true
             },
             "hmr": {
-              "fileReplacements": [{
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.hmr.ts"
-              }]
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
             }
           }
         },

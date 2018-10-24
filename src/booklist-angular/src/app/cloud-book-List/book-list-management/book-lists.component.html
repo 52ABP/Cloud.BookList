@@ -1,0 +1,113 @@
+<page-header [title]="l('BookLists')" [desc]="l('BookListsHeaderInfo')"></page-header>
+
+<nz-card [nzBordered]="false">
+
+    <div class="mb-md">
+        <!-- 模糊搜索框 -->
+        <nz-row nzGutter="8">
+            <nz-col nzSm="24">
+                <nz-form-item>
+                    <nz-form-control>
+                        <nz-input-group nzSearch [nzSuffix]="suffixSearchButton">
+                            <input type="text" nz-input [(ngModel)]="filterText" (keyup.enter)="refresh()" name="filterText"
+                                [placeholder]="l('SearchWithThreeDot')">
+                            <ng-template #suffixSearchButton>
+                                <button nz-button nzType="primary" nzSearch type="submit" (click)="refresh()">
+                                    <i class="anticon anticon-search"></i>
+                                </button>
+                            </ng-template>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <div class="mb-md">
+        <!-- 操作常规按钮部分 如： 添加、批量删除、导出Excel表 -->
+        <nz-row nzGutter="8">
+            <nz-col nzMd="20" nzSm="12" class="btn-gutter">
+                <button nz-button [nzType]="'primary'" *ngIf="isGranted('Pages.BookList.Create')&&appSession.tenantId"
+                    (click)="createOrEdit()">
+                    <i class="anticon anticon-plus"></i>
+                    <span>
+                        {{l("Create")}}
+                    </span>
+                </button>
+                <button nz-button [nzType]="'danger'" *ngIf="isGranted('Pages.BookList.BatchDelete')" (click)="batchDelete()">
+                    <i class="anticon anticon-delete"></i>
+                    <span>
+                        {{l("BatchDelete")}}
+                    </span>
+                </button>
+                <button nz-button nzType="default" *ngIf="isGranted('Pages.BookList.ExportToExcel')" (click)="exportToExcel()">
+                    <i class="anticon anticon-file-excel"></i>
+                    <span>
+                        {{l("ExportToExcel")}}
+                    </span>
+                </button>
+                <label nz-checkbox [(ngModel)]="allChecked" (nzCheckedChange)="checkAll($event)" [nzDisabled]="allCheckboxDisabled">{{l("SelectAll")}}</label>
+            </nz-col>
+        </nz-row>
+    </div>
+
+    <div class="my-md">
+        <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+            <ng-template #message>
+                <span [innerHTML]="l('GridSelectedXItemsTips',selectedDataItems.length)"></span>
+                <a (click)="restCheckStatus(dataList)" class="ml-md">
+                    {{l('ClearEmpty')}}
+                </a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="refreshGoFirstPage()">
+                    {{l('Refresh')}}
+                </a>
+            </ng-template>
+        </nz-alert>
+    </div>
+
+</nz-card>
+
+
+
+<nz-list [nzLoading]="isTableLoading" [nzDataSource]="dataList" [nzRenderItem]="itemTemplate" [nzGrid]="{ gutter: 24, xxl: 8, xl: 12, lg: 12, md: 12, sm: 12, xs: 24 }">
+    <ng-template #itemTemplate let-item>
+        <nz-list-item>
+            <nz-card nzHoverable [nzActions]="[op1,op2,op3]">
+                <ng-template #op1>
+                    <a (click)="createOrEdit(item.id)">
+                        <i nz-tooltip class="anticon anticon-edit" *ngIf="appSession.tenantId"></i>
+                        <i nz-tooltip class="anticon anticon-search" *ngIf="!appSession.tenantId"></i>
+                    </a>
+                </ng-template>
+                <ng-template #op2>
+                    <nz-popconfirm [nzTitle]="l('ConfirmDeleteWarningMessage')" (nzOnConfirm)="delete(item)" [nzOkText]="l('Ok')"
+                        [nzCancelText]="l('Cancel')">
+                        <a nz-popconfirm>
+                            <i class="anticon anticon-delete mr-sm"></i>
+                        </a>
+                    </nz-popconfirm>
+                </ng-template>
+                <ng-template #op3>
+                    <a (click)="shareQrCode(item.id,item.tenantId)">
+                        <i nz-tooltip class="anticon anticon-share-alt"></i>
+                    </a>
+                </ng-template>
+                <nz-card-meta [nzTitle]="nzTitle" [nzAvatar]="nzAvatar">
+                    <ng-template #nzTitle>
+                        <h2> {{item.name}} </h2>
+                    </ng-template>
+                    <ng-template #nzAvatar>
+                        <label nz-checkbox [(ngModel)]="item.checked" (nzCheckedChange)="refreshCheckStatus(dataList)"></label>
+                    </ng-template>
+                </nz-card-meta>
+                <div class="card-info d-flex">
+                    <div>
+                        <p>{{item.creationTime |_date}}</p>
+                        <p>{{item.intro}}</p>
+                    </div>
+                </div>
+            </nz-card>
+        </nz-list-item>
+    </ng-template>
+</nz-list>

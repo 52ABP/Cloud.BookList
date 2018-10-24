@@ -15,6 +15,9 @@ import { BooksComponent } from './books-management/books.component';
 import { CreateOrEditBookComponent } from './books-management/create-or-edit-book/create-or-edit-book.component';
 import { ImgShowComponent } from './components/img-show/img-show.component';
 import { BookTagComponent } from './components/book-tag/book-tag.component';
+import { BookListsComponent } from './book-list-management/book-lists.component';
+import { CreateOrEditBookListComponent } from './book-list-management/create-or-edit-book-list/create-or-edit-book-list.component';
+import { BookComponent } from './components/book/book.component';
 
 
 @NgModule({
@@ -33,6 +36,10 @@ import { BookTagComponent } from './components/book-tag/book-tag.component';
     CreateOrEditBookComponent,
     ImgShowComponent,
     BookTagComponent,
+    //
+    BookListsComponent,
+    CreateOrEditBookListComponent,
+    BookComponent,
   ],
   entryComponents: [
     BookTagsComponent,
@@ -40,6 +47,8 @@ import { BookTagComponent } from './components/book-tag/book-tag.component';
     BooksComponent,
     CreateOrEditBookComponent,
     ImgShowComponent,
+    BookListsComponent,
+    CreateOrEditBookListComponent,
   ],
   providers: [
     LocalizationService,

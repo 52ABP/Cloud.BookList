@@ -1,0 +1,60 @@
+<nz-card nzHoverable [nzBordered]="false" [nzLoading]="loading" (click)="shareQrCode()" *ngIf="entity">
+
+  <nz-card-meta [nzTitle]="nzTitle">
+    <ng-template #nzTitle>
+      <h2>
+        {{entity.name}}
+        <div style="font-size:12px;display: inline;">
+          &nbsp;&nbsp;
+          <span>{{entity.userName}}</span>
+          &nbsp;&nbsp;
+          <span>{{entity.creationTime | _date}}</span>
+          &nbsp;&nbsp;
+          <i nz-tooltip class="anticon anticon-share-alt"></i>
+        </div>
+      </h2>
+    </ng-template>
+  </nz-card-meta>
+
+  <div class="card-info d-flex">
+    <p style="word-break: break-all;">{{entity.intro}}</p>
+  </div>
+
+</nz-card>
+
+
+<nz-card nzHoverable [nzBordered]="false" [nzLoading]="loading" *ngIf="entity">
+  <nz-list nzItemLayout="vertical" [nzLoading]="loading" [nzDataSource]="entity.books" *ngIf="entity" [nzRenderItem]="itemTemplate">
+    <ng-template #itemTemplate let-item>
+      <nz-list-item [nzContent]="nzContent" [nzExtra]="nzExtra">
+
+        <ng-template #nzExtra>
+          <img [alt]="item.name" [src]="item.imgUrl" style="width:120px;">
+        </ng-template>
+
+        <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="nzDescription">
+
+          <ng-template #nzTitle>
+            <h3>
+              <a href="{{item.url}}" target="_blank" *ngIf="item.url">{{item.name}}</a>
+              <a target="_blank" *ngIf="!item.url">{{item.name}}</a>
+              <div style="font-size:12px;display: inline;color: rgba(0, 0, 0, 0.65);">
+                &nbsp;&nbsp;
+                <span>{{item.author}}</span>
+              </div>
+            </h3>
+          </ng-template>
+
+          <ng-template #nzDescription>
+            <nz-tag *ngFor="let bookTag of item.bookTags">{{bookTag}}</nz-tag>
+          </ng-template>
+        </nz-list-item-meta>
+
+        <ng-template #nzContent>
+          <p>{{item.intro}}</p>
+        </ng-template>
+
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+</nz-card>

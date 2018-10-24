@@ -11,6 +11,10 @@ import { TitleService } from '@yoyo/theme';
 
 import { BookTagsComponent } from './book-tag-management/book-tags.component';
 import { CreateOrEditBookTagComponent } from './book-tag-management/create-or-edit-book-tag/create-or-edit-book-tag.component';
+import { BooksComponent } from './books-management/books.component';
+import { CreateOrEditBookComponent } from './books-management/create-or-edit-book/create-or-edit-book.component';
+import { ImgShowComponent } from './components/img-show/img-show.component';
+import { BookTagComponent } from './components/book-tag/book-tag.component';
 
 
 @NgModule({
@@ -24,11 +28,18 @@ import { CreateOrEditBookTagComponent } from './book-tag-management/create-or-ed
   declarations: [
     BookTagsComponent,
     CreateOrEditBookTagComponent,
-
+    //
+    BooksComponent,
+    CreateOrEditBookComponent,
+    ImgShowComponent,
+    BookTagComponent,
   ],
   entryComponents: [
     BookTagsComponent,
     CreateOrEditBookTagComponent,
+    BooksComponent,
+    CreateOrEditBookComponent,
+    ImgShowComponent,
   ],
   providers: [
     LocalizationService,

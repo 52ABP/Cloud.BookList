@@ -42,6 +42,8 @@ export class AppMenus {
         new MenuItem('CloudBookList', '', 'anticon anticon-info-circle-o', '', [
             // 书籍标签
             new MenuItem('BookTags', 'Pages.BookTag.Query', 'anticon anticon-info-circle-o', '/app/colud-book-list/book-tags'),
+            // 书籍
+            new MenuItem('Books', 'Pages.Book.Query', 'anticon anticon-info-circle-o', '/app/colud-book-list/books'),
         ]),
     ];
 }

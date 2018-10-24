@@ -1,0 +1,88 @@
+<form nz-form #validateForm="ngForm" (ngSubmit)="submitForm()" nzLayout="horizontal" autocomplete="off">
+    <!-- 模态框头部 -->
+    <div class="modal-header">
+        <div class="modal-title">
+            <i class="anticon anticon-medicine-box mr-sm"></i>
+            <span *ngIf="entity.id">{{l('Edit')}}</span>
+            <span *ngIf="!entity.id">{{l('Create')}}</span>
+        </div>
+    </div>
+    <!-- 模态框内容 -->
+    <fieldset>
+        <!-- 提示信息 -->
+        <!-- <nz-alert nzType="info" nzCloseable [nzShowIcon]="true" nzMessage="l('我想提示点什么内容给你说')"></nz-alert> -->
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="imgUrl">{{l('BookImgUrl')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="imgUrl" #imgUrl="ngModel" [(ngModel)]="entity.imgUrl" [placeholder]="l('BookImgUrl')">
+
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">{{l('Name')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="name" #name="ngModel" [(ngModel)]="entity.name" [placeholder]="l('Name')"
+                    required>
+
+                <!-- 校验 -->
+                <nz-form-explain *ngIf="name.control.dirty&&name.control.errors">
+                    <ng-container *ngIf="name.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                </nz-form-explain>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label nz-col [nzSm]="6" [nzXs]="24" nzRequired nzFor="author">{{l('Author')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="author" #author="ngModel" [(ngModel)]="entity.author" [placeholder]="l('Author')"
+                    required>
+
+                <!-- 校验 -->
+                <nz-form-explain *ngIf="author.control.dirty&&author.control.errors">
+                    <ng-container *ngIf="author.control.hasError('required')">{{l('CanNotNull')}}</ng-container>
+                </nz-form-explain>
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="intro">{{l('Intro')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <textarea nz-input name="intro" #intro="ngModel" [(ngModel)]="entity.intro" [placeholder]="l('Intro')"
+                    [nzAutosize]="{ minRows: 3 }"></textarea>
+
+
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="url">{{l('Url')}}</nz-form-label>
+            <nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input nz-input name="url" #url="ngModel" [(ngModel)]="entity.url" [placeholder]="l('Url')">
+
+
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired>标签</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <app-book-tag name="tag" [tagSourceData]="tags" (selectedDataChange)="tagSelectChange($event)"></app-book-tag>
+                <!-- <app-blog-column-with-tag name="tags" [(treeData)]="selectTags" (selectedDataChange)="tagSelectChange($event)"></app-blog-column-with-tag> -->
+                <nz-form-explain *ngIf="selectTags.length===0">
+                    请选标签
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+
+    </fieldset>
+    <!-- 模态框底部 -->
+    <div class="modal-footer">
+        <button nz-button [nzType]="'default'" type="button" (click)="close()" [disabled]="saving">
+            <i class="anticon anticon-close-circle-o"></i> {{l("Cancel")}}
+        </button>
+        <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.form.valid|| saving" [nzLoading]="saving"
+            *ngIf="appSession.tenantId">
+            <i class="anticon anticon-save" *ngIf="!saving"></i> {{l("Save")}}
+        </button>
+    </div>
+</form>

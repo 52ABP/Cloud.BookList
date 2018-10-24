@@ -1,0 +1,7 @@
+<nz-spin [nzSpinning]="loading">
+  <nz-select #select style="width: 100%" [(ngModel)]="multipleValue" [nzSize]="size" nzMode="multiple" [nzOpen]="isOpen"
+    nzPlaceHolder="Please select" (keydown.enter)="handleInputConfirm($event)" (ngModelChange)="modelChange()"
+    (nzOnSearch)="seachValueChange($event)">
+    <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+  </nz-select>
+</nz-spin>

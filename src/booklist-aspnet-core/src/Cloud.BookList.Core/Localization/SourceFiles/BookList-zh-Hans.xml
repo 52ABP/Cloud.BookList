@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="zh-Hans">
   <texts>
+    <!-- 云书单自定义多语言信息 -->
+    <text name="CloudBookList" value="云书单"></text>
+    <text name="BookTags" value="书籍标签"></text>
+    <text name="BookTagsHeaderInfo" value="书籍标签管理"></text>
+    <text name="BookImgUrl" value="封面"></text>
+    <text name="Author" value="作者"></text>
+    <text name="Intro" value="简介"></text>
+    <text name="Url" value="链接"></text>
+    <text name="Books" value="书籍"></text>
+    <text name="BooksHeaderInfo" value="书籍管理"></text>
+    <text name="BookLists" value="书单"></text>
+    <text name="BookListsHeaderInfo" value="书单管理"></text>
+    <text name="SelectAll" value="全选"></text>
+    <text name="SelectBook" value="选择书籍"></text>
+    <text name="ViewDetails" value="详情"></text>
+    
+    
+    <!--数据表格-->
+    <text name="BatchDelete" value="批量删除"></text>
+    <text name="NoData" value="暂无数据"/>
+    <text name="GridFooterDisplayText" value="当前 {0} 页/共 {1} 页，共 {2} 条/显示 {3}-{4} 条"/>
+    <text name="GridSelectedXItemsTips">
+      <![CDATA[
+        已选择 <strong class="text-primary">{0}</strong> 项
+     ]]>
+    </text>
+
+
+    <!--系统提示性信息-->
+    <text name="HintInformation" value="提示信息"/>
+    <text name="ConfirmInformation" value="确认信息"/>
+    <text name="MessageInfo" value="通知信息"/>
+    <text name="MessageSuccess" value="成功信息"/>
+    <text name="MessageWarn" value="警告信息"/>
+    <text name="MessageError" value="错误信息"/>
+    <text name="MessageFail" value="失败信息"/>
+    <text name="MessageConfirmOperation" value="确认操作"/>
+    <text name="DoYouMakeSureToContinue" value="确认要继续吗？"/>
+    <text name="ConfirmLogout" value="确定退出系统吗？"/>
+    <text name="ConfirmDeleteWarningMessage" value="确定要删除吗？"/>
+    <text name="PleaseSelectAtLeastOneItem" value="请至少选择一项"/>
+    <text name="InvalidParameter" value="参数无效" />
+    <text name="ConfirmDeleteXItemsWarningMessage">
+      <![CDATA[
+        确定要删除选中的 <b class='text-red'>{0}</b> 项记录吗？
+       ]]>
+    </text>
+    <text name="YouHaveNoOperatingPermissions" value="抱歉，您无权操作！"/>
+    <text name="MovingWithThreeDot" value="移动中..."/>
+
+
+    <!--公用-->
+    <text name="Search" value="搜索"/>
+    <text name="InXSearchPlaceHolder" value="在{0}中搜索"/>
+    <text name="PleaseSelectAXPlaceHolder" value="请选择一个{0}"/>
+    <text name="StartDateTime" value="开始日期"/>
+    <text name="EndDateTime" value="结束日期"/>
+    <text name="ThisFieldIsRequired" value="此项为必填项"/>
+    <text name="EnterFormatIsNotCorrect">输入的格式不正确</text>
+    <text name="More" value="更多..."/>
+    <text name="ClearEmpty" value="清空"/>
+    <text name="NameOfThings" value="名称"/>
+    <text name="Create" value="添加"/>
+
+
     <text name="HomePage" value="主页" />
     <text name="About" value="关于我们" />
     <text name="WellcomeMessage" value="欢迎使用 YoyoCmsTemplate!" />

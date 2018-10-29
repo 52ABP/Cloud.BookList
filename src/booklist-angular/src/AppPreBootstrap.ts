@@ -3,11 +3,8 @@ import * as moment from 'moment';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { Type, CompilerOptions, NgModuleRef } from '@angular/core';
 import { AppConsts } from '@shared/AppConsts';
-
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-
 import { LocalizationService } from '@yoyo/abp';
+import { environment } from '@env/environment';
 
 export class AppPreBootstrap {
   static run(callback: () => void): void {
@@ -27,18 +24,30 @@ export class AppPreBootstrap {
   }
 
   private static getApplicationConfig(callback: () => void) {
+    let envName = '';
+    if (environment.production) {
+      envName = 'prod';
+    } else {
+      envName = 'dev';
+    }
+
     return abp
       .ajax({
-        url: '/assets/appconfig.json',
+        url: '/assets/appconfig.' + envName + '.json',
         method: 'GET',
         headers: {
           'Abp.TenantId': abp.multiTenancy.getTenantIdCookie(),
         },
       })
       .done(result => {
-        AppConsts.appBaseUrl = result.appBaseUrl;
+        AppConsts.appBaseUrl =
+          window.location.protocol + '//' + window.location.host; // result.appBaseUrl;
+        // AppConsts.appBaseUrl = result.appBaseUrl;
         AppConsts.remoteServiceBaseUrl = result.remoteServiceBaseUrl;
-        LocalizationService.localizationSourceName = AppConsts.localization.defaultLocalizationSourceName;
+        AppConsts.uploadApiUrl =
+          result.remoteServiceBaseUrl + result.uploadApiUrl;
+        LocalizationService.localizationSourceName =
+          AppConsts.localization.defaultLocalizationSourceName;
         callback();
       });
   }
@@ -80,9 +89,6 @@ export class AppPreBootstrap {
         );
 
         moment.locale(abp.localization.currentLanguage.name);
-
-        // 注册语言,NG-Zorro的DataPicker要使用
-        registerLocaleData(zh);
 
         if (abp.clock.provider.supportsMultipleTimezone) {
           moment.tz.setDefault(abp.timing.timeZoneInfo.iana.timeZoneId);

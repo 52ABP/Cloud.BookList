@@ -65,7 +65,7 @@
     <text name="NameOfThings" value="名称"/>
     <text name="Create" value="添加"/>
 
-
+    <texT name="NewTenant" value="新租户"></texT>
     <text name="HomePage" value="主页" />
     <text name="About" value="关于我们" />
     <text name="WellcomeMessage" value="欢迎使用 YoyoCmsTemplate!" />

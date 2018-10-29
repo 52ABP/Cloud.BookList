@@ -34,7 +34,7 @@ namespace Cloud.BookList.CloudBookList.BookListManagement
         /// <param name="id">书单Id</param>
         /// <param name="tenantId">租户Id</param>
         /// <returns></returns>
-        Task<BookListShareDto> GetShare(long id, long tenantId);
+        Task<BookListShareDto> GetShare(long? id, int? tenantId);
 
         /// <summary>
 		/// 获取BookList的分页列表信息

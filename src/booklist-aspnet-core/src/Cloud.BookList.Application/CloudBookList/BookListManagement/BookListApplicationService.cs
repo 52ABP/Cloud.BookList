@@ -57,61 +57,73 @@ namespace Cloud.BookList.CloudBookList.BookListManagement
             _bookManager = bookManager;
         }
 
-        public async Task<BookListShareDto> GetShare(long id, long tenantId)
+        public async Task<BookListShareDto> GetShare(long? id, int? tenantId)
         {
-            if (id <= 0 || tenantId <= 0)
+            // 参数校验
+            if (!id.HasValue || id <= 0 || !tenantId.HasValue || tenantId <= 0)
             {
-                throw new UserFriendlyException("错误的操作");
+                throw new UserFriendlyException("未能找到相关书单!");
             }
 
-
-            var entity = await _entityRepository.GetAll()
-                            .IgnoreQueryFilters()
-                            .Where(o => o.Id == id && o.TenantId == tenantId)
-                            .FirstOrDefaultAsync();
-
-            var outputDto = entity.MapTo<BookListShareDto>();
-
-            // 创建书单的用户名
-            outputDto.UserName = string.Empty;
-            if (entity.CreatorUserId.HasValue)
+            // 校验租户是否存在
+            var tenant = await TenantManager.GetByIdAsync(tenantId.Value);
+            if (tenant == null)
             {
-                var user = await UserManager.Users
-                            .IgnoreQueryFilters()
-                            .Where(o => o.Id == entity.CreatorUserId.Value && o.TenantId == entity.TenantId)
-                            .FirstOrDefaultAsync();
-                outputDto.UserName = user.UserName;
+                throw new UserFriendlyException("未能找到相关书单!");
             }
 
-
-            if (entity.BookListAndBookRelationships == null)
+            // 设置工作单元为书单所属的租户
+            using (CurrentUnitOfWork.SetTenantId(tenantId))
             {
+
+                var entity = await _entityRepository.GetAll()
+                            .IgnoreQueryFilters()
+                            .Where(o => o.Id == id)
+                            .FirstOrDefaultAsync();
+
+                var outputDto = entity.MapTo<BookListShareDto>();
+
+                // 创建书单的用户名
+                outputDto.UserName = string.Empty;
+                if (entity.CreatorUserId.HasValue)
+                {
+                    var user = await UserManager.Users
+                                .IgnoreQueryFilters()
+                                .Where(o => o.Id == entity.CreatorUserId.Value)
+                                .FirstOrDefaultAsync();
+                    outputDto.UserName = user.UserName;
+                }
+
+
+                if (entity.BookListAndBookRelationships == null)
+                {
+                    return outputDto;
+                }
+
+                outputDto.Books = new List<BookAndBookTagDto>();
+
+                BookAndBookTagDto bookAndBookTagDto = null;
+                foreach (var bookListAndBookRelationship in entity.BookListAndBookRelationships)
+                {
+                    // 书籍
+                    bookAndBookTagDto = bookListAndBookRelationship.Book.MapTo<BookAndBookTagDto>();
+
+                    outputDto.Books.Add(bookAndBookTagDto);
+                    if (bookListAndBookRelationship.Book.BookAndBookTagRelationships == null)
+                    {
+                        continue;
+                    }
+
+                    // 书籍标签
+                    bookAndBookTagDto.BookTags = new List<string>();
+                    foreach (var bookAndBookTagRelationship in bookListAndBookRelationship.Book.BookAndBookTagRelationships)
+                    {
+                        bookAndBookTagDto.BookTags.Add(bookAndBookTagRelationship.BookTag.Name);
+                    }
+                }
+
                 return outputDto;
             }
-
-            outputDto.Books = new List<BookAndBookTagDto>();
-
-            BookAndBookTagDto bookAndBookTagDto = null;
-            foreach (var bookListAndBookRelationship in entity.BookListAndBookRelationships)
-            {
-                // 书籍
-                bookAndBookTagDto = bookListAndBookRelationship.Book.MapTo<BookAndBookTagDto>();
-
-                outputDto.Books.Add(bookAndBookTagDto);
-                if (bookListAndBookRelationship.Book.BookAndBookTagRelationships == null)
-                {
-                    continue;
-                }
-
-                // 书籍标签
-                bookAndBookTagDto.BookTags = new List<string>();
-                foreach (var bookAndBookTagRelationship in bookListAndBookRelationship.Book.BookAndBookTagRelationships)
-                {
-                    bookAndBookTagDto.BookTags.Add(bookAndBookTagRelationship.BookTag.Name);
-                }
-            }
-
-            return outputDto;
         }
 
 

@@ -1,0 +1,110 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  angularPath: 'src/booklist-angular'     # 前端UI目录
+  migrationToolBuildPath: 'src/booklist-aspnet-core/src/Cloud.BookList.Migrator' # 迁移工具.csproj所在目录
+  hostBuildPath: 'src/booklist-aspnet-core/src/Cloud.BookList.Web.Host' # Host.csproj所在目录
+  dotnetConfig: ' -c Release -f netcoreapp2.1 -o publish' # dotnet发布的命令携带的参数
+
+steps:
+
+# ============================== Migrator Start Build
+- task: PowerShell@2
+  displayName: 'Migrator tool build'
+  inputs:
+    targetType: 'inline' 
+    script: |
+      cd $(System.DefaultWorkingDirectory)/$(migrationToolBuildPath)
+      dotnet publish $(dotnetConfig)
+
+# 将dotnet发布的结果目录打包并复制到 $(Build.ArtifactStagingDirectory) 目录
+- task: ArchiveFiles@2
+  displayName: 'Archive Migrator'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/$(migrationToolBuildPath)/publish'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/migrator.zip' 
+
+
+# ============================== Host Start Build
+
+- task: PowerShell@2
+  displayName: 'Host build'
+  inputs:
+    targetType: 'inline' 
+    script: |
+      cd $(System.DefaultWorkingDirectory)/$(hostBuildPath)
+      dotnet publish $(dotnetConfig)
+
+# 将dotnet发布的结果目录打包并复制到 $(Build.ArtifactStagingDirectory) 目录
+- task: ArchiveFiles@2
+  displayName: 'Archive Host'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/$(hostBuildPath)/publish'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/host.zip' 
+
+
+# ============================== Angular Start
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+  displayName: 'Install Node.js'
+
+
+- task: PowerShell@2
+  displayName: 'Angular ui restone and build'
+  inputs:
+    targetType: 'inline' 
+    script: |
+      cd $(System.DefaultWorkingDirectory)/$(angularPath)
+      npm install -g @angular/cli
+      npm install
+      ng build --prod --build-optimizer
+      cp $(System.DefaultWorkingDirectory)/$(angularPath)/web.config $(System.DefaultWorkingDirectory)/$(angularPath)/dist
+
+
+# 将Angular发布的目录打包并复制到 $(Build.ArtifactStagingDirectory) 目录
+- task: ArchiveFiles@2
+  displayName: 'Archive AngularUI'
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/$(angularPath)/dist'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/ui.zip' 
+
+
+
+# ============================== 查看
+
+- task: PowerShell@2
+  displayName: 'show all publish dir and publish file'
+  inputs:
+    targetType: 'inline' 
+    script: |
+      "AngularUI out put:"
+      ls $(System.DefaultWorkingDirectory)/$(angularPath) 
+      ls $(System.DefaultWorkingDirectory)/$(angularPath)/dist 
+      "MigrationTool out put:"
+      ls $(System.DefaultWorkingDirectory)/$(migrationToolBuildPath) 
+      ls $(System.DefaultWorkingDirectory)/$(migrationToolBuildPath)/publish 
+      "Host out put:"
+      ls $(System.DefaultWorkingDirectory)/$(hostBuildPath) 
+      ls $(System.DefaultWorkingDirectory)/$(hostBuildPath)/publish 
+      "all zip out put:"
+      ls $(Build.ArtifactStagingDirectory)
+
+
+
+# ============================== 发布到目录
+
+- task: PublishBuildArtifacts@1 # 预定义的task
+  displayName: 'publish artifact: drop'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 

@@ -4,14 +4,27 @@
 
     <nz-option nzCustomContent *ngFor="let option of listOfOption" [nzLabel]="option.name" [nzValue]="option.id">
       <div nz-row>
-        <div nz-col class="gutter-row" nzSpan="6">
+        <div nz-col class="gutter-row" nzSpan="2">
           <img [src]="option.imgUrl" style="width:20px;height:23px;" *ngIf="option.imgUrl" />
         </div>
-        <div nz-col class="gutter-row" nzSpan="6">
-          <div class="gutter-box"> {{option.name}}</div>
+        <div nz-col class="gutter-row" nzSpan="12">
+          <div class="gutter-box">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="option.name">
+                {{option.name}}
+              </span>
+            </ellipsis>
+          </div>
         </div>
-        <div nz-col class="gutter-row" nzSpan="6">
-          <div class="gutter-box"> {{option.author}}</div>
+        <div nz-col class="gutter-row" nzSpan="1"></div>
+        <div nz-col class="gutter-row" nzSpan="8">
+          <div class="gutter-box">
+            <ellipsis lines="1">
+              <span nz-tooltip [nzTitle]="option.author">
+                {{option.author}}
+              </span>
+            </ellipsis>
+          </div>
         </div>
       </div>
 

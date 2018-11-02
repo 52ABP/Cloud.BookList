@@ -65,7 +65,7 @@ steps:
     targetType: 'inline' 
     script: |
       cd $(System.DefaultWorkingDirectory)/$(angularPath)
-      npm install -g @angular/cli
+      npm install -g @angular/cli@6.2.1
       npm install
       ng build --prod --build-optimizer
       cp $(System.DefaultWorkingDirectory)/$(angularPath)/web.config $(System.DefaultWorkingDirectory)/$(angularPath)/dist

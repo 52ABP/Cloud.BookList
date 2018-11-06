@@ -6,8 +6,8 @@ using Abp.MultiTenancy;
 using Cloud.BookList.Authorization;
 using Cloud.BookList.Authorization.Roles;
 using Cloud.BookList.Authorization.Users;
-using Cloud.BookList.CloudBookList.BookManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookTagManagement.Authorization;
+using Cloud.BookList.CloudBookLists.Books.Authorization;
+using Cloud.BookList.CloudBookLists.BookTags.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -56,7 +56,7 @@ namespace Cloud.BookList.EntityFrameworkCore.Seed.Host
             var permissions = PermissionFinder
                 .GetAllPermissions(
                     new BookListAuthorizationProvider(),
-                    new CloudBookList.BookListManagement.Authorization.BookListAuthorizationProvider(true),
+                    new CloudBookLists.BookLists.Authorization.BookListAuthorizationProvider(true),
                     new BookAuthorizationProvider(true),
                     new BookTagAuthorizationProvider(true)
                 )

@@ -1,5 +1,4 @@
 using AutoMapper;
-using Cloud.BookList.CloudBookList.BookManagement;
 using Cloud.BookList.CloudBookLists.Books.Dtos;
 
 namespace Cloud.BookList.CloudBookLists.Books.Mapper

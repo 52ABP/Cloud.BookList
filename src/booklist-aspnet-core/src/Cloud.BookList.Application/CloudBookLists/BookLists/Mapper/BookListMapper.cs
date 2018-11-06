@@ -11,13 +11,13 @@ namespace Cloud.BookList.CloudBookLists.BookLists.Mapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<CloudBookList.BookListManagement.BookList, BookListListDto>();
-            configuration.CreateMap<BookListListDto, CloudBookList.BookListManagement.BookList>();
+            configuration.CreateMap<BookList, BookListListDto>();
+            configuration.CreateMap<BookListListDto, BookList>();
 
-            configuration.CreateMap<BookListEditDto, CloudBookList.BookListManagement.BookList>();
-            configuration.CreateMap<CloudBookList.BookListManagement.BookList, BookListEditDto>();
+            configuration.CreateMap<BookListEditDto, BookList>();
+            configuration.CreateMap<BookList, BookListEditDto>();
 
-            configuration.CreateMap<CloudBookList.BookListManagement.BookList, BookListShareDto>()
+            configuration.CreateMap<BookList, BookListShareDto>()
                 .ForMember(o => o.UserName, options => options.Ignore())
                 .ForMember(o => o.Books, options => options.Ignore());
 

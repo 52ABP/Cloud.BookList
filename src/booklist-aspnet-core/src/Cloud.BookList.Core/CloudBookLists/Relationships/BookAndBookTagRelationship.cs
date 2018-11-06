@@ -1,12 +1,10 @@
-﻿using Abp.Domain.Entities;
+﻿using System;
+using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
-using Cloud.BookList.CloudBookList.BookManagement;
-using Cloud.BookList.CloudBookList.BookTagManagement;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Cloud.BookList.CloudBookLists.Books;
+using Cloud.BookList.CloudBookLists.BookTags;
 
-namespace Cloud.BookList.CloudBookList.RelationshipManagement
+namespace Cloud.BookList.CloudBookLists.Relationships
 {
     /// <summary>
     /// 书籍 关联 书籍标签

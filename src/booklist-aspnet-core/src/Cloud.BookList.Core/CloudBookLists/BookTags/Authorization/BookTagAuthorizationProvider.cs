@@ -1,12 +1,10 @@
-
-
 using System.Linq;
 using Abp.Authorization;
 using Abp.Configuration.Startup;
 using Abp.Localization;
 using Cloud.BookList.Authorization;
 
-namespace Cloud.BookList.CloudBookList.BookTagManagement.Authorization
+namespace Cloud.BookList.CloudBookLists.BookTags.Authorization
 {
     /// <summary>
     /// 权限配置都在这里。

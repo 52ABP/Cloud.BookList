@@ -1,14 +1,8 @@
-
-
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Abp;
 using Abp.Domain.Services;
-using Cloud.BookList.CloudBookList.BookTagManagement;
 
-
-namespace Cloud.BookList.CloudBookList.BookTagManagement.DomainService
+namespace Cloud.BookList.CloudBookLists.BookTags.DomainService
 {
     public interface IBookTagManager : IDomainService
     {

@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Abp.Zero.EntityFrameworkCore;
 using Cloud.BookList.Authorization.Roles;
 using Cloud.BookList.Authorization.Users;
+using Cloud.BookList.CloudBookLists.Books;
+using Cloud.BookList.CloudBookLists.BookTags;
+using Cloud.BookList.CloudBookLists.Relationships;
 using Cloud.BookList.MultiTenancy;
-using Cloud.BookList.CloudBookList.BookTagManagement;
-using Cloud.BookList.CloudBookList.BookManagement;
-using Cloud.BookList.CloudBookList.RelationshipManagement;
 
 namespace Cloud.BookList.EntityFrameworkCore
 {
@@ -17,7 +17,7 @@ namespace Cloud.BookList.EntityFrameworkCore
 
         public DbSet<Book> Books { get; set; }
 
-        public DbSet<CloudBookList.BookListManagement.BookList> BookLists { get; set; }
+        public DbSet<CloudBookLists.BookLists.BookList> BookLists { get; set; }
 
         public DbSet<BookAndBookTagRelationship> BookAndBookTagRelationships { get; set; }
 

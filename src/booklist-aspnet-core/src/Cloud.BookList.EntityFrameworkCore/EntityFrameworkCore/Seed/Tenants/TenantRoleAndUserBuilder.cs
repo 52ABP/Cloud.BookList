@@ -9,8 +9,8 @@ using Abp.MultiTenancy;
 using Cloud.BookList.Authorization;
 using Cloud.BookList.Authorization.Roles;
 using Cloud.BookList.Authorization.Users;
-using Cloud.BookList.CloudBookList.BookManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookTagManagement.Authorization;
+using Cloud.BookList.CloudBookLists.Books.Authorization;
+using Cloud.BookList.CloudBookLists.BookTags.Authorization;
 
 namespace Cloud.BookList.EntityFrameworkCore.Seed.Tenants
 {
@@ -52,7 +52,7 @@ namespace Cloud.BookList.EntityFrameworkCore.Seed.Tenants
             var permissions = PermissionFinder
                 .GetAllPermissions(
                 new BookListAuthorizationProvider(),
-                new CloudBookList.BookListManagement.Authorization.BookListAuthorizationProvider(false),
+                new CloudBookLists.BookLists.Authorization.BookListAuthorizationProvider(false),
                 new BookAuthorizationProvider(false),
                 new BookTagAuthorizationProvider(false)
                 )

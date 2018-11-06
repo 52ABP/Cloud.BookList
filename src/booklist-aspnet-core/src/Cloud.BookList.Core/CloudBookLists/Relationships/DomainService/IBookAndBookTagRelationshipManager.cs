@@ -1,14 +1,8 @@
-
-
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Abp;
 using Abp.Domain.Services;
-using Cloud.BookList.CloudBookList.RelationshipManagement;
 
-
-namespace Cloud.BookList.CloudBookList.RelationshipManagement.DomainService
+namespace Cloud.BookList.CloudBookLists.Relationships.DomainService
 {
     public interface IBookAndBookTagRelationshipManager : IDomainService
     {

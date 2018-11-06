@@ -1,6 +1,6 @@
 
 
-namespace Cloud.BookList.CloudBookList.BookManagement.Authorization
+namespace Cloud.BookList.CloudBookLists.Books.Authorization
 {
 	/// <summary>
     /// 定义系统的权限名称的字符串常量。

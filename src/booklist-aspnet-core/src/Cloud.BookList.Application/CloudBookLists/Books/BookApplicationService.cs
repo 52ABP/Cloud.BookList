@@ -8,13 +8,12 @@ using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
-using Cloud.BookList.CloudBookList.BookManagement;
-using Cloud.BookList.CloudBookList.BookManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookManagement.DomainService;
-using Cloud.BookList.CloudBookList.BookTagManagement.DomainService;
-using Cloud.BookList.CloudBookList.RelationshipManagement.DomainService;
+using Cloud.BookList.CloudBookLists.Books.Authorization;
+using Cloud.BookList.CloudBookLists.Books.DomainService;
 using Cloud.BookList.CloudBookLists.Books.Dtos;
+using Cloud.BookList.CloudBookLists.BookTags.DomainService;
 using Cloud.BookList.CloudBookLists.BookTags.Dtos;
+using Cloud.BookList.CloudBookLists.Relationships.DomainService;
 using Cloud.BookList.MultiTenancy;
 using Microsoft.EntityFrameworkCore;
 

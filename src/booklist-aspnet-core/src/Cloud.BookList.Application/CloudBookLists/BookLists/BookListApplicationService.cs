@@ -9,12 +9,12 @@ using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
 using Abp.UI;
-using Cloud.BookList.CloudBookList.BookListManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookListManagement.DomainService;
-using Cloud.BookList.CloudBookList.BookManagement.DomainService;
-using Cloud.BookList.CloudBookList.RelationshipManagement.DomainService;
+using Cloud.BookList.CloudBookLists.BookLists.Authorization;
+using Cloud.BookList.CloudBookLists.BookLists.DomainService;
 using Cloud.BookList.CloudBookLists.BookLists.Dtos;
+using Cloud.BookList.CloudBookLists.Books.DomainService;
 using Cloud.BookList.CloudBookLists.Books.Dtos;
+using Cloud.BookList.CloudBookLists.Relationships.DomainService;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cloud.BookList.CloudBookLists.BookLists
@@ -24,7 +24,7 @@ namespace Cloud.BookList.CloudBookLists.BookLists
     ///</summary>
     public class BookListAppService : BookListAppServiceBase, IBookListAppService
     {
-        private readonly IRepository<CloudBookList.BookListManagement.BookList, long> _entityRepository;
+        private readonly IRepository<BookList, long> _entityRepository;
 
         private readonly IBookListManager _entityManager;
 
@@ -36,7 +36,7 @@ namespace Cloud.BookList.CloudBookLists.BookLists
         /// 构造函数 
         ///</summary>
         public BookListAppService(
-        IRepository<CloudBookList.BookListManagement.BookList, long> entityRepository
+        IRepository<BookList, long> entityRepository
         , IBookListManager entityManager,
         IBookListAndBookRelationshipManager bookListAndBookRelationshipManager,
         IBookManager bookManager
@@ -246,7 +246,7 @@ namespace Cloud.BookList.CloudBookLists.BookLists
             //TODO:新增前的逻辑判断，是否允许新增
 
             // var entity = ObjectMapper.Map <BookList>(input);
-            var entity = input.MapTo<CloudBookList.BookListManagement.BookList>();
+            var entity = input.MapTo<BookList>();
 
 
             var entityId = await _entityRepository.InsertAndGetIdAsync(entity);

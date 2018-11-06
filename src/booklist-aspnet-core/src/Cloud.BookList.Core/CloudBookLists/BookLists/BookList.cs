@@ -1,11 +1,10 @@
-﻿using Abp.Domain.Entities;
-using Abp.Domain.Entities.Auditing;
-using Cloud.BookList.CloudBookList.RelationshipManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
+using Cloud.BookList.CloudBookLists.Relationships;
 
-namespace Cloud.BookList.CloudBookList.BookListManagement
+namespace Cloud.BookList.CloudBookLists.BookLists
 {
     /// <summary>
     /// 书单

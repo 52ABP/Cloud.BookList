@@ -1,11 +1,9 @@
-﻿using Abp.Domain.Entities;
+﻿using System;
+using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
-using Cloud.BookList.CloudBookList.BookManagement;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Cloud.BookList.CloudBookLists.Books;
 
-namespace Cloud.BookList.CloudBookList.RelationshipManagement
+namespace Cloud.BookList.CloudBookLists.Relationships
 {
     /// <summary>
     /// 书单 关联 书籍
@@ -18,7 +16,7 @@ namespace Cloud.BookList.CloudBookList.RelationshipManagement
         /// </summary>
         public long BookListId { get; set; }
 
-        public virtual BookListManagement.BookList BookList { get; set; }
+        public virtual BookLists.BookList BookList { get; set; }
 
 
 

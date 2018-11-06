@@ -2,10 +2,10 @@ using Abp.AutoMapper;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Cloud.BookList.Authorization;
-using Cloud.BookList.CloudBookList.BookManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookTagManagement.Authorization;
 using Cloud.BookList.CloudBookLists.BookLists.Mapper;
+using Cloud.BookList.CloudBookLists.Books.Authorization;
 using Cloud.BookList.CloudBookLists.Books.Mapper;
+using Cloud.BookList.CloudBookLists.BookTags.Authorization;
 using Cloud.BookList.CloudBookLists.BookTags.Mapper;
 
 namespace Cloud.BookList
@@ -29,7 +29,7 @@ namespace Cloud.BookList
             Configuration.Authorization.Providers.Add<BookAuthorizationProvider>();
 
             // 书单权限
-          Configuration.Authorization.Providers.Add<CloudBookList.BookListManagement.Authorization.BookListAuthorizationProvider>();
+          Configuration.Authorization.Providers.Add<CloudBookLists.BookLists.Authorization.BookListAuthorizationProvider>();
 
             #endregion
 

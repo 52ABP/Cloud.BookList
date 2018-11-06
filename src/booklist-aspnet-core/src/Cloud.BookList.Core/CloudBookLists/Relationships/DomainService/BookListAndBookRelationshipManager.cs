@@ -1,26 +1,11 @@
-
-
 using System;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Linq.Dynamic;
-using System.Linq.Expressions;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Abp.Linq;
-using Abp.Linq.Extensions;
-using Abp.Extensions;
-using Abp.UI;
 using Abp.Domain.Repositories;
-using Abp.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
-using Cloud.BookList;
-using Cloud.BookList.CloudBookList.RelationshipManagement;
-
-
-namespace Cloud.BookList.CloudBookList.RelationshipManagement.DomainService
+namespace Cloud.BookList.CloudBookLists.Relationships.DomainService
 {
     /// <summary>
     /// BookListAndBookRelationship领域层的业务管理

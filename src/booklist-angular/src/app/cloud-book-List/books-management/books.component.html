@@ -90,16 +90,16 @@
                     <th nz-th nzShowSort nzSortKey="ImgUrl" nzWidth="100px">
                         <span>{{l('BookImgUrl')}}</span>
                     </th>
-                    <th nz-th nzShowSort nzSortKey="Name">
+                    <th nz-th nzShowSort nzSortKey="Name" nzWidth="260px">
                         <span>{{l('Name')}}</span>
                     </th>
-                    <th nz-th nzShowSort nzSortKey="Author">
+                    <th nz-th nzShowSort nzSortKey="Author" nzWidth="260px">
                         <span>{{l('Author')}}</span>
                     </th>
                     <th nz-th nzShowSort nzSortKey="Intro" nzWidth="260px">
                         <span>{{l('Intro')}}</span>
                     </th>
-                    <th nz-th nzShowSort nzSortKey="Url" nzWidth="150px">
+                    <th nz-th nzShowSort nzSortKey="Url" nzWidth="200px">
                         <span>{{l('Url')}}</span>
                     </th>
                     <th nz-th nzShowSort nzSortKey="TenancyName" *ngIf="!this.appSession.tenantId">
@@ -123,14 +123,14 @@
                         <img [src]="item.imgUrl" (click)="showImg(item.imgUrl)" style="width:50px;" *ngIf="item.imgUrl" />
                     </td>
                     <td nz-td>
-                        <ellipsis lines="1">
+                        <ellipsis lines="2">
                             <span nz-tooltip [nzTitle]="item.name">
                                 {{item.name}}
                             </span>
                         </ellipsis>
                     </td>
                     <td nz-td>
-                        <ellipsis lines="1">
+                        <ellipsis lines="2">
                             <span nz-tooltip [nzTitle]="item.author">
                                 {{item.author}}
                             </span>

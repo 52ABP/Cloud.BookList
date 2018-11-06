@@ -2,11 +2,11 @@ using Abp.AutoMapper;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Cloud.BookList.Authorization;
-using Cloud.BookList.CloudBookList.BookListManagement.Mapper;
 using Cloud.BookList.CloudBookList.BookManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookManagement.Mapper;
 using Cloud.BookList.CloudBookList.BookTagManagement.Authorization;
-using Cloud.BookList.CloudBookList.BookTagManagement.Mapper;
+using Cloud.BookList.CloudBookLists.BookLists.Mapper;
+using Cloud.BookList.CloudBookLists.Books.Mapper;
+using Cloud.BookList.CloudBookLists.BookTags.Mapper;
 
 namespace Cloud.BookList
 {

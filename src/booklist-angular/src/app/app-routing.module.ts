@@ -42,7 +42,8 @@ const routes: Routes = [
       // 云书单模块
       {
         path: 'colud-book-list',
-        loadChildren: 'app/cloud-book-List/cloud-book-list.module#CloudBookListModule', // Lazy load admin module
+        loadChildren:
+          'app/cloud-book-List/cloud-book-list.module#CloudBookListModule', // Lazy load admin module
         data: { preload: true },
       },
       {
@@ -57,4 +58,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

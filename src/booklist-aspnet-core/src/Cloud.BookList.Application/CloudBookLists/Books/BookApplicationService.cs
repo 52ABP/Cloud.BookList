@@ -79,10 +79,11 @@ namespace Cloud.BookList.CloudBookLists.Books
             // var entityListDtos = ObjectMapper.Map<List<BookListDto>>(entityList);
             var entityListDtos = entityList.MapTo<List<BookListDto>>();
 
+
+            //Host显示租户信息内容
             if (!AbpSession.TenantId.HasValue)
             {
                 // 这里的写法需要优化，但是这里我就这么写了
-                Tenant tmpTenant = null;
                 int i = 0;
                 foreach (var item in entityList)
                 {
@@ -91,8 +92,9 @@ namespace Cloud.BookList.CloudBookLists.Books
                         i++;
                         continue;
                     }
+                    
 
-                    tmpTenant = await TenantManager.GetByIdAsync(item.TenantId);
+                    var tmpTenant = await TenantManager.GetByIdAsync(item.TenantId);
                     var tmpDto = entityListDtos[i++];
                     tmpDto.TenancyName = tmpTenant.TenancyName;
                     tmpDto.TenancyDisplayName = tmpTenant.Name;

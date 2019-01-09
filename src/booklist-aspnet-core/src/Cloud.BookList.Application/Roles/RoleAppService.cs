@@ -92,6 +92,23 @@ namespace Cloud.BookList.Roles
             ));
         }
 
+
+        public async Task<GetRoleForEditOutput> GetRoleForEdit(EntityDto input)
+        {
+            var permissions = PermissionManager.GetAllPermissions();
+            var role = await _roleManager.GetRoleByIdAsync(input.Id);
+            var grantedPermissions = (await _roleManager.GetGrantedPermissionsAsync(role)).ToArray();
+            var roleEditDto = ObjectMapper.Map<RoleEditDto>(role);
+
+            return new GetRoleForEditOutput
+            {
+                Role = roleEditDto,
+                Permissions = ObjectMapper.Map<List<FlatPermissionDto>>(permissions).OrderBy(p => p.DisplayName).ToList(),
+                GrantedPermissionNames = grantedPermissions.Select(p => p.Name).ToList()
+            };
+        }
+
+
         protected override IQueryable<Role> CreateFilteredQuery(PagedResultRequestDto input)
         {
             return Repository.GetAllIncluding(x => x.Permissions);

@@ -1,7 +1,6 @@
-using AutoMapper;
 using Abp.Authorization;
 using Abp.Authorization.Roles;
-using Cloud.BookList.Authorization.Roles;
+using AutoMapper;
 
 namespace Cloud.BookList.Roles.Dto
 {

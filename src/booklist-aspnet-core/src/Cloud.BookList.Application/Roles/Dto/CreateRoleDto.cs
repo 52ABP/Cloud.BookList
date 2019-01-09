@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Authorization.Roles;
 using Abp.AutoMapper;
+using Cloud.BookList.Authorization.Roles;
 
 namespace Cloud.BookList.Roles.Dto
 {

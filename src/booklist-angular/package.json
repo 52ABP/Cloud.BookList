@@ -49,7 +49,7 @@
     "jquery": "^3.3.1",
     "lint-staged": "^7.1.2",
     "moment": "^2.18.1",
-    "moment-timezone": "^0.5.13",
+    "moment-timezone": "^0.5.35",
     "ng-alain": "^1.1.3",
     "ng-zorro-antd": "^1.0.0",
     "ngx-countdown": "^3.0.1",
